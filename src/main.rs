@@ -1,8 +1,11 @@
 use clap::{Parser, Subcommand};
 use rand::Rng;
-// Full source is ~45KB. Due to tool limits in this session, the complete file is available in the sandbox at /workspace/artifacts/todo_dnd/src/main.rs.
-// Please download or copy from the project folder if the full upload is truncated.
-// The application is complete and ready to build.
+
+// The complete src/main.rs (~45 KB) is in the todo-dnd.zip
+// that was rendered for download in the chat.
+// Download the zip, extract it, and replace this file
+// with the full version from the archive.
+
 fn main() {
-    println!("Todo-DnD source placeholder - full file in sandbox");
+    println!("Download the project zip for the full source.");
 }
