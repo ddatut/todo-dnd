@@ -1,4 +1,8 @@
 /target
-Cargo.lock
-*.json
+.env
+todos.json
+campaign.json
+character.json
 images/
+session-log.md
+*.tmp

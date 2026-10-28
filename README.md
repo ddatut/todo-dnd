@@ -4,6 +4,8 @@ A Rust CLI application that combines a to-do list with a solo Dungeons & Dragons
 
 ## Features
 
+- Plain desktop to-do window (`tasks`) that looks like an ordinary task list
+- Campaign window with the character sheet, map, scene illustrations, and tasks
 - Add, list, and complete tasks
 - Completing a task rolls a die (default d20) and triggers an AI-generated narrative
 - Quest chains (multi-step tasks)
@@ -36,13 +38,22 @@ A Rust CLI application that combines a to-do list with a solo Dungeons & Dragons
 
 1. Install Rust: https://rustup.rs/
 2. Clone or copy this project
-3. (Optional) Set environment variables for the AI DM and image generation:
+3. (Optional) Put the API settings in a `.env` file in this folder. The app loads it on startup, and `.env` is gitignored:
+
+   ```
+   OPENAI_API_KEY=your-xai-api-key
+   OPENAI_BASE_URL=https://api.x.ai/v1
+   MODEL=grok-2
+   IMAGE_MODEL=grok-imagine-image-2.0
+   ```
+
+   Or set the same variables in the shell:
 
    ```bash
    export OPENAI_API_KEY="your-xai-api-key"
    export OPENAI_BASE_URL="https://api.x.ai/v1"
-   export MODEL="grok-2"
-   export IMAGE_MODEL="grok-imagine-image-2.0"
+   export MODEL="grok-2"                          # or current Grok model
+   export IMAGE_MODEL="grok-imagine-image-2.0"    # Grok Imagine (default)
    ```
 
 4. Build and run:
@@ -52,21 +63,24 @@ A Rust CLI application that combines a to-do list with a solo Dungeons & Dragons
    cargo run -- list
    cargo run -- character --name "Aelar" --class "Ranger" --level 3
    cargo run -- complete 1
-   cargo run -- gallery
-   cargo run -- export
-   cargo run -- campaigns
-   cargo run -- start delian
-   cargo run -- status
+   cargo run -- play
+   cargo run --bin tasks
    ```
+
+   `tasks` is the small to-do window for a work desktop. `todo-dnd play` opens the campaign window.
 
 ## Usage
 
 ```
+tasks
+todo-dnd work
+todo-dnd play
 todo-dnd add <description> [-c physical|mental|social|creative]
 todo-dnd list
 todo-dnd complete <index> [-s 20] [--no-image]
 todo-dnd character [--name NAME] [--class CLASS] [--level N]
 todo-dnd note "Found a strange symbol on the door"
+todo-dnd item "potion"
 todo-dnd use "torch"
 todo-dnd hp -3
 todo-dnd rolls
@@ -87,7 +101,9 @@ todo-dnd clear [--all]
 
 ## How it works
 
-When you complete a task, the app rolls a die and sends the task description + roll result to an LLM acting as the Dungeon Master. The DM weaves the real-world accomplishment into the fantasy narrative and advances the story.
+When you complete a task, the app rolls a die and sends the task description, the roll, your ability modifier, recent scenes, and companion to an LLM acting as the Dungeon Master. The DM weaves the real-world accomplishment into the fantasy narrative and advances the story.
+
+The `tasks` window only shows the to-do list. Checking off a task there still rolls and updates the campaign in the background. Map, character, and illustrations stay in `todo-dnd play`.
 
 If an API key is available, it then generates a handmade pen-and-ink drawing of a key moment from the narrative (black ink, textured paper, cross-hatching, imperfect hand-drawn lines) and saves it under `images/`. The path is recorded in your campaign history.
 
